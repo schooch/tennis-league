@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'PagesController@index');
-Route::get('/about', 'PagesController@about');
+Route::get('/mens', 'PagesController@mens');
 Route::get('/services', 'PagesController@services');
 
 Route::resource('posts', 'PostsController');
