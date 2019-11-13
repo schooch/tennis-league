@@ -2,7 +2,15 @@
 /public/hot
 /public/storage
 /storage/*.key
+/logs
 /vendor
+/.composer
+/.ssh
+
+.bash_history
+.htaccess
+.viminfo
+composer.phar
 .env
 .env.backup
 .phpunit.result.cache
