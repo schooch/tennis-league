@@ -16,11 +16,8 @@ class PagesController extends Controller
         return view('pages.mens')->with('title', $title);
     } 
 
-    public function services() {
-        $data = array(
-            'title' => 'Services',
-            'services' => ['Python', 'Bad PHP']
-        );
-        return view('pages.services') ->with($data);
+    public function ladies() {
+        $title = "Ladies";
+        return view('pages.ladies')->with('title', $title);
     } 
 }

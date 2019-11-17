@@ -13,7 +13,7 @@
 
 Route::get('/', 'PagesController@index');
 Route::get('/mens', 'PagesController@mens');
-Route::get('/services', 'PagesController@services');
+Route::get('/ladies', 'PagesController@ladies');
 
 Route::resource('posts', 'PostsController');
 Auth::routes();

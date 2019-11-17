@@ -16,7 +16,7 @@
                     <a class="nav-link" href="/mens">Mens</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/services">Services</a>
+                    <a class="nav-link" href="/ladies">Ladies</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/posts">Blog</a> 
