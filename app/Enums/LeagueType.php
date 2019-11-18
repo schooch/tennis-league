@@ -11,19 +11,19 @@ use BenSampo\Enum\Enum;
  */
 final class LeagueType extends Enum
 {
-    const MEN =   0;
+    const MENS =   0;
     const LADIES =   1;
     const JUNIORS = 2;
 
-    public static function getDescription(int $value): string
+    public static function getDescription($value): string
     {
         switch ($value)
         {
-            case self::MEN:
-                return 'Men';
+            case self::MENS:
+                return 'Mens';
             case self::LADIES:
                 return 'Ladies';
-            case self::Juniors:
+            case self::JUNIORS:
                 return 'Juniors';
             default:
                 return 'Error No league Type.';

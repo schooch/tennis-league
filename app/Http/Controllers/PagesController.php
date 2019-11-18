@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Enums\LeagueType;
 
 class PagesController extends Controller
 {
@@ -12,12 +13,14 @@ class PagesController extends Controller
     } 
 
     public function mens() {
-        $title = "Mens";
-        return view('pages.mens')->with('title', $title);
+        $league = LeagueType::MENS;
+        return view('pages.league')->with('league', $league);
     } 
 
     public function ladies() {
-        $title = "Ladies";
-        return view('pages.ladies')->with('title', $title);
+        $league = LeagueType::LADIES;
+        return view('pages.league')->with('league', $league);
     } 
+
+
 }
