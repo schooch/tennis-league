@@ -28,6 +28,11 @@ final class LeagueType extends Enum
             default:
                 return 'Error No league Type.';
         }
+    }    
+    
+    public static function getLowerDescription($value): string
+    {
+        return strtolower(LeagueType::getDescription($value));
     }
 }
 

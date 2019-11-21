@@ -13,23 +13,23 @@ class PagesController extends Controller
         return view('pages.index', compact('title'));
     } 
 
-    protected function leagueDB($league) {
+    protected function teams($league) {
         $clubs = DB::table('clubs')->get();
-        return view('pages.league', ['league' => $league, 'clubs' => $clubs]);
-    }
-
-    public function mens() {
-        $league = LeagueType::MENS;
         $teams = DB::table('teams')
             ->join('clubs', 'teams.clubID', '=', 'clubs.clubID')
             ->select('clubs.clubName', 'teams.teamChar')
-            ->where('teams.maleorFemale', 'M')
+            ->where('teams.leagueType', $league)
             ->get();
         return view('pages.league', ['league' => $league, 'clubs' => $teams]);
+    }
+
+    public function mens() {
+        $league = (LeagueType::MENS);
+        return $this->teams($league);
     } 
 
     public function ladies() {
         $league = LeagueType::LADIES;
-        return $this->leagueDB($league);
+        return $this->teams($league);
     } 
 }
