@@ -8,7 +8,7 @@ use App\Enums\LeagueType;
 <p>This is the {{strtolower(LeagueType::getDescription($league))}} league.</p>
 <ul>
     @foreach ($clubs as $club)
-        <li>{{$club->clubName}}</li>
+        <li>{{$club->clubName}} {{$club->teamChar}}</li>
     @endforeach
 </ul>
 @endsection
