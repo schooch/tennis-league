@@ -15,12 +15,23 @@ class PagesController extends Controller
 
     protected function teams($league) {
         $clubs = DB::table('clubs')->get();
-        $teams = DB::table('teams')
+        $divisions = DB::table('teams')
+            ->where('teams.leagueType', $league)
+            ->max('division');
+
+        $teams = array();
+        for($i = 1; $i <= $divisions; $i++)
+        {
+            $team = DB::table('teams')
             ->join('clubs', 'teams.clubID', '=', 'clubs.clubID')
             ->select('clubs.clubName', 'teams.teamChar')
             ->where('teams.leagueType', $league)
+            ->where('teams.division', $i)
             ->get();
-        return view('pages.league', ['league' => $league, 'clubs' => $teams]);
+            array_push($teams, $team);
+        }
+
+        return view('pages.league', ['league' => $league, 'teams' => $teams]);
     }
 
     public function mens() {

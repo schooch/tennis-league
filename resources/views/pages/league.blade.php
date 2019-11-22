@@ -7,8 +7,22 @@ use App\Enums\LeagueType;
 <h1>{{LeagueType::getDescription($league)}}</h1>
 <p>This is the {{(LeagueType::getLowerDescription($league))}} league.</p>
 <ul>
-    @foreach ($clubs as $club)
-        <li>{{$club->clubName}} {{$club->teamChar}}</li>
-    @endforeach
+    <div class="container">
+        @foreach ($teams as $division)
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <td>Club</td>
+                    <td>Team</td>
+                </thead>
+                <tbody>
+            @foreach ($division as $team)
+                <tr>
+                    <td>{{$team->clubName}}</td><td>{{$team->teamChar}}</td>
+                </tr>
+            @endforeach
+                </tbody>
+            </table>
+        @endforeach
+    </div>
 </ul>
 @endsection
