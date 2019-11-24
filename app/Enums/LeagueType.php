@@ -15,6 +15,12 @@ final class LeagueType extends Enum
     const LADIES =   1;
     const JUNIORS = 2;
 
+    /**
+     * Gets the string description of the Enum.
+     *
+     * @param int $value Value of the enum
+     * @return string A string of the league type.
+     */
     public static function getDescription($value): string
     {
         switch ($value)
@@ -28,8 +34,11 @@ final class LeagueType extends Enum
             default:
                 return 'Error No league Type.';
         }
-    }    
-    
+    }
+
+    /**
+     * gets the description but in all lower case.
+     */
     public static function getLowerDescription($value): string
     {
         return strtolower(LeagueType::getDescription($value));

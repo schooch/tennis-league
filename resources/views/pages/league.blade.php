@@ -1,4 +1,4 @@
-<?php 
+<?php
 use App\Enums\LeagueType;
 ?>
 
@@ -11,6 +11,7 @@ use App\Enums\LeagueType;
         @foreach ($teams as $division)
             <thead class="thead-dark">
                 <tr>
+                        <th scope="col">#</th>
                     @foreach ($headers as $head)
                         <th scope="col">{{$head}}</th>
                     @endforeach
@@ -19,9 +20,12 @@ use App\Enums\LeagueType;
             <tbody>
                 @foreach ($division as $team)
                     <tr scope="row">
-                        <td>{{$team->clubName}}</td>
-                        <td>{{$team->teamChar}}</td>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$team->clubName}} {{$team->teamChar}}</td>
                         <td>{{$team->pld}}</td>
+                        <td>{{$team->won}}</td>
+                        <td>{{$team->drawn}}</td>
+                        <td>{{$team->lost}}</td>
                         <td>{{$team->pointsFor}}</td>
                         <td>{{$team->pointsAgainst}}</td>
                         <td>{{$team->totalPoints}}</td>
