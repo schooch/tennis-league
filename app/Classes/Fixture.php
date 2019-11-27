@@ -21,7 +21,7 @@ class Fixture{
     }
 
     public static function restWeek($monday){
-        $instance = new self(' ', ' ', ' ', $monday, ' ');
+        $instance = new self(' ', ' ', ' ', $monday, 0);
         $instance->day = '';
         return $instance;
     }
