@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Enums\LeagueType;
 use Illuminate\Support\Facades\DB;
-use App\Classes\fixture;
+use App\Classes\Fixture;
 
 class PagesController extends Controller
 {
