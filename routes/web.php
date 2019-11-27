@@ -14,6 +14,7 @@
 Route::get('/', 'PagesController@index');
 Route::get('/mens', 'PagesController@mens');
 Route::get('/ladies', 'PagesController@ladies');
+Route::get('fixtures/{id}', 'PagesController@fixtures');
 
 Route::resource('posts', 'PostsController');
 Auth::routes();
