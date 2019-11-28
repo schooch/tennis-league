@@ -185,7 +185,21 @@ class PagesController extends Controller
         return $this->teams($league);
     }
 
-    public function fixtures($id) {
+    /**
+     * Query the database with the teamID, makes the 10 fixtures and
+     */
+    public function fixtures($club, $team) {
+        $teamChar = substr($team, -1);
+        $league = strtoupper(substr($team, 0, -1));
+        $league = LeagueType::getValueFromString($league);
+
+        $id = DB::table('clubs')
+            ->join('teams', 'clubs.clubID', '=', 'teams.clubID')
+            ->where("clubName", $club)
+            ->where("teamChar", $teamChar)
+            ->where("leagueType", $league)
+            ->value('teams.teamID');
+
         $result = DB::select(DB::raw($this->rawFixtureQuery()), [$id, $id]);
         $monday = config('controlConsts.start');
         $fixtures = [];

@@ -43,6 +43,18 @@ final class LeagueType extends Enum
     {
         return strtolower(LeagueType::getDescription($value));
     }
+
+    public static function getValueFromString($input)
+    {
+        $x = LeagueType::toArray();
+        foreach ($x as $key => $val) {
+            if(strtoupper($key) == strtoupper($input))
+            {
+                return $val;
+            }
+            return null;
+        }
+    }
 }
 
 

@@ -7,7 +7,7 @@ use App\Enums\LeagueType;
 <h1>{{LeagueType::getDescription($league)}}</h1>
 <p>This is the {{(LeagueType::getLowerDescription($league))}} league.</p>
 <div class="container">
-    <table class="table">
+    <table class="table table-hover">
         @foreach ($teams as $division)
             <thead class="thead-dark">
                 <tr>
@@ -19,7 +19,7 @@ use App\Enums\LeagueType;
             </thead>
             <tbody>
                 @foreach ($division as $team)
-                    <tr scope="row">
+                <tr class="table-row" data-href="/{{$team->clubName}}/{{(LeagueType::getLowerDescription($league))}}{{$team->teamChar}}">
                         <td>{{$loop->iteration}}</td>
                         <td>{{$team->clubName}} {{$team->teamChar}}</td>
                         <td>{{$team->pld}}</td>
@@ -29,7 +29,7 @@ use App\Enums\LeagueType;
                         <td>{{$team->pointsFor}}</td>
                         <td>{{$team->pointsAgainst}}</td>
                         <td>{{$team->totalPoints}}</td>
-                    </tr>
+                </tr>
                 @endforeach
             </tbody>
         @endforeach
