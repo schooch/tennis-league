@@ -5,7 +5,7 @@ use App\Enums\LeagueType;
 @extends('layouts.app')
 @section('content')
 <h1>{{LeagueType::getDescription($league)}}</h1>
-<p>This is the {{(LeagueType::getLowerDescription($league))}} league.</p>
+<p>This is the {{LeagueType::getLowerDescription($league)}} league.</p>
 <div class="container">
     <table class="table table-hover">
         @foreach ($teams as $division)

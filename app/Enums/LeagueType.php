@@ -52,8 +52,8 @@ final class LeagueType extends Enum
             {
                 return $val;
             }
-            return null;
         }
+        return null;
     }
 }
 

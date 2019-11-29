@@ -190,8 +190,10 @@ class PagesController extends Controller
      */
     public function fixtures($club, $team) {
         $teamChar = substr($team, -1);
-        $league = strtoupper(substr($team, 0, -1));
-        $league = LeagueType::getValueFromString($league);
+        $leagueStr = strtoupper(substr($team, 0, -1));
+        $league = LeagueType::getValueFromString($leagueStr);
+
+        $fullTeamName = $club . ' ' . $teamChar . ' ' . LeagueType::getDescription($league);
 
         $id = DB::table('clubs')
             ->join('teams', 'clubs.clubID', '=', 'teams.clubID')
@@ -219,7 +221,8 @@ class PagesController extends Controller
             array_push($fixtures, $fix);
             date_add($monday, date_interval_create_from_date_string("1 week"));
         }
-        return view('pages.fixtures', ['team' => $fixtures]);
+        return view('pages.fixtures', ['fixtures' => $fixtures,
+                                       'team' => $fullTeamName]);
     }
 
 }

@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
+    <h1>{{$team}}</h1>
+</div>
+<div class="container">
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -12,13 +15,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($team as $match)
+            @foreach ($fixtures as $fixture)
                 <tr scope="row">
-                    <td scope="col">{{$match->week}}</td>
-                    <td scope="col">{{$match->home}}</td>
-                    <td scope="col">{{$match->away}}</td>
-                    <td scope="col">{{$match->monday}}</td>
-                    <td scope="col">{{$match->day}}</td>
+                    <td scope="col">{{$fixture->week}}</td>
+                    <td scope="col">{{$fixture->home}}</td>
+                    <td scope="col">{{$fixture->away}}</td>
+                    <td scope="col">{{$fixture->monday}}</td>
+                    <td scope="col">{{$fixture->day}}</td>
                 </tr>
             @endforeach
         </tbody>
