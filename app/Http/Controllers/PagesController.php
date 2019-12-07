@@ -96,4 +96,55 @@ class PagesController extends Controller
                                        'team' => $fullTeamName]);
     }
 
+    private static function rotate($toRotate)
+    {
+        $height = count($toRotate);
+        $width = count($toRotate[0]);
+        $result = array();
+        for ($i = 0; $i < $width; $i++) {
+            $row = array();
+            for ($j = 0; $j < $height; $j++) {
+                array_push($row, $toRotate[$j][$i]);
+            }
+            array_push($result, $row);
+        }
+
+        return $result;
+    }
+
+    public function club($club)
+    {
+        $result = array();
+        $count = array();
+        foreach (LeagueType::toArray() as $key => $val)
+        {
+            $teams = DB::table('clubs')
+            ->join('teams', 'clubs.clubID', '=', 'teams.clubID')
+            ->where("clubName", $club)
+            ->where("leagueType", $val)
+            ->select('teamChar', 'leagueType')
+            ->get();
+            foreach ($teams as $team)
+            {
+                $team->leagueType = LeagueType::getDescription($team->leagueType);
+            }
+            if(count($teams) > 0)
+            {
+                array_push($result, $teams);
+            }
+            array_push($count, count($teams));
+        }
+
+        foreach ($result as $leagueType)
+        {
+            for ($i = count($leagueType); $i < max($count); $i++)
+            {
+                $leagueType[$i] = null;
+            }
+        }
+        //return $this::rotate($result);
+        return view('pages.club', ['club' => $club,
+                                'teams' => $this::rotate($result)]);
+    }
+
 }

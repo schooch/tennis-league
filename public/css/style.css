@@ -1,4 +1,19 @@
 .table-row{
     cursor:pointer;
-    }
-    
+}
+a {
+    color: inherit;
+    text-decoration: none; /* no underline */
+}
+a:hover {
+    color: inherit;
+    text-decoration: none; /* no underline */
+}
+.table-link {
+    color: inherit; /* blue colors for links too */
+}
+.table-link:hover {
+    color: inherit; /* blue colors for links too */
+    text-decoration: none; /* no underline */
+    background-color: grey !important;
+}
