@@ -142,7 +142,7 @@ class PagesController extends Controller
             }
         }
         //return $this::rotate($result);
-        return view('pages.club', ['club' => $club,
+        return view('pages.club', ['club' => ucwords(strtolower($club)),
                                 'teams' => $this::rotate($result)]);
     }
 
