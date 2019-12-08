@@ -4,7 +4,7 @@
     <h1>{{$club}}</h1>
 </div>
 <div class="container">
-    <table class="table">
+    <table class="table table-cell-hover">
         <thead class="thead-dark">
             <tr>
                 <th scope="col" colspan="2">team</th>
@@ -20,7 +20,7 @@
                 <tr scope="row" class="table-row">
                     @foreach ($char as $team)
                         @isset ($team)
-                            <td scope="col">
+                            <td scope="col" class="table-link">
                                 <a href="/{{$club}}/{{$team->leagueType}}{{$team->teamChar}}">
                                     {{$team->teamChar}}
                                 </a>
