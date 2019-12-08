@@ -18,11 +18,13 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/ladies">Ladies</a>
                 </li>
+                <?php /*
                 <li class="nav-item">
                     <a class="nav-link" href="/posts">Blog</a>
-                </li>
+                </li>*/?>
             </ul>
             <!-- Right Side Of Navbar -->
+            <?php /*
             <ul class="navbar-nav ml-auto">
                 <!-- Authentication Links -->
                 @guest
@@ -52,6 +54,7 @@
                     </li>
                 @endguest
             </ul>
+            */?>
         </div>
     </div>
 </nav>
