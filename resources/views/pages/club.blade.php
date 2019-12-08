@@ -11,7 +11,7 @@
             </tr>
             <tr>
                     @foreach ($teams[0] as $team)
-                        <td scope="col">{{$team->leagueType}}</td>
+                        <th scope="col">{{$team->leagueType}}</th>
                     @endforeach
             </tr>
         </thead>
@@ -20,9 +20,9 @@
                 <tr scope="row" class="table-row">
                     @foreach ($char as $team)
                         @isset ($team)
-                            <td scope="col" class="table-link">
+                            <td scope="col">
                                 <a href="/{{$club}}/{{$team->leagueType}}{{$team->teamChar}}">
-                                    <div  class="table-link">{{$team->teamChar}}</div>
+                                    {{$team->teamChar}}
                                 </a>
                             </td>
                         @endisset

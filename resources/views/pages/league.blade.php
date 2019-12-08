@@ -19,16 +19,16 @@ use App\Enums\LeagueType;
             </thead>
             <tbody>
                 @foreach ($division as $team)
-                <tr class="table-row" data-href="/{{$team->clubName}}/{{(LeagueType::getLowerDescription($league))}}{{$team->teamChar}}">
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$team->clubName}} {{$team->teamChar}}</td>
-                        <td>{{$team->pld}}</td>
-                        <td>{{$team->won}}</td>
-                        <td>{{$team->drawn}}</td>
-                        <td>{{$team->lost}}</td>
-                        <td>{{$team->pointsFor}}</td>
-                        <td>{{$team->pointsAgainst}}</td>
-                        <td>{{$team->totalPoints}}</td>
+                <tr class="table-row">
+                        <td><a href="/{{$team->clubName}}/{{(LeagueType::getLowerDescription($league))}}{{$team->teamChar}}">{{$loop->iteration}}</a></td>
+                        <td><a href="/{{$team->clubName}}/{{(LeagueType::getLowerDescription($league))}}{{$team->teamChar}}">{{$team->clubName}} {{$team->teamChar}}</a></td>
+                        <td><a href="/{{$team->clubName}}/{{(LeagueType::getLowerDescription($league))}}{{$team->teamChar}}">{{$team->pld}}</a></td>
+                        <td><a href="/{{$team->clubName}}/{{(LeagueType::getLowerDescription($league))}}{{$team->teamChar}}">{{$team->won}}</a></td>
+                        <td><a href="/{{$team->clubName}}/{{(LeagueType::getLowerDescription($league))}}{{$team->teamChar}}">{{$team->drawn}}</a></td>
+                        <td><a href="/{{$team->clubName}}/{{(LeagueType::getLowerDescription($league))}}{{$team->teamChar}}">{{$team->lost}}</a></td>
+                        <td><a href="/{{$team->clubName}}/{{(LeagueType::getLowerDescription($league))}}{{$team->teamChar}}">{{$team->pointsFor}}</a></td>
+                        <td><a href="/{{$team->clubName}}/{{(LeagueType::getLowerDescription($league))}}{{$team->teamChar}}">{{$team->pointsAgainst}}</a></td>
+                        <td><a href="/{{$team->clubName}}/{{(LeagueType::getLowerDescription($league))}}{{$team->teamChar}}">{{$team->totalPoints}}</a></td>
                 </tr>
                 @endforeach
             </tbody>
