@@ -147,4 +147,11 @@ class PagesController extends Controller
                                 'teams' => $this::rotate($result)]);
     }
 
+    public function clubs()
+    {
+        $clubs = DB::table('clubs')->get('clubName');
+        // return $teams;
+        return view('pages.clubs', ['clubs' => $clubs]);
+    }
+
 }

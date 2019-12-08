@@ -18,6 +18,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/ladies">Ladies</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/clubs">Clubs</a>
+                </li>
+                <?php // auth stuff commented out ?>
                 <?php /*
                 <li class="nav-item">
                     <a class="nav-link" href="/posts">Blog</a>

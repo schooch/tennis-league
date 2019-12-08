@@ -14,6 +14,7 @@
 Route::get('/', 'PagesController@index');
 Route::get('/mens', 'PagesController@mens');
 Route::get('/ladies', 'PagesController@ladies');
+Route::get('clubs', 'PagesController@clubs');
 Route::get('/{club}/{team}', 'PagesController@fixtures');
 Route::get('/{club}', 'PagesController@club');
 
