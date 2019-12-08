@@ -13,6 +13,22 @@ class PagesController extends Controller
         return view('pages.index');
     }
 
+    private static function rotate($toRotate)
+    {
+        $height = count($toRotate);
+        $width = count($toRotate[0]);
+        $result = array();
+        for ($i = 0; $i < $width; $i++) {
+            $row = array();
+            for ($j = 0; $j < $height; $j++) {
+                array_push($row, $toRotate[$j][$i]);
+            }
+            array_push($result, $row);
+        }
+
+        return $result;
+    }
+
 
     /**
      * querys the database for which leage to get the teams. returns a list of list of DB.
@@ -63,8 +79,7 @@ class PagesController extends Controller
         $teamChar = substr($team, -1);
         $leagueStr = strtoupper(substr($team, 0, -1));
         $league = LeagueType::getValueFromString($leagueStr);
-
-        $fullTeamName = $club . ' ' . $teamChar . ' ' . LeagueType::getDescription($league);
+        $fullTeamName = ucwords(strtolower($club)) . ' ' . strtoupper($teamChar) . ' ' . LeagueType::getDescription($league);
 
         $id = DB::table('clubs')
             ->join('teams', 'clubs.clubID', '=', 'teams.clubID')
@@ -94,22 +109,6 @@ class PagesController extends Controller
         }
         return view('pages.fixtures', ['fixtures' => $fixtures,
                                        'team' => $fullTeamName]);
-    }
-
-    private static function rotate($toRotate)
-    {
-        $height = count($toRotate);
-        $width = count($toRotate[0]);
-        $result = array();
-        for ($i = 0; $i < $width; $i++) {
-            $row = array();
-            for ($j = 0; $j < $height; $j++) {
-                array_push($row, $toRotate[$j][$i]);
-            }
-            array_push($result, $row);
-        }
-
-        return $result;
     }
 
     public function club($club)
