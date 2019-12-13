@@ -9,7 +9,8 @@ use App\Classes\Fixture;
 
 class PagesController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return view('pages.index');
     }
 
@@ -34,7 +35,8 @@ class PagesController extends Controller
      * querys the database for which leage to get the teams. returns a list of list of DB.
      * @param int $league An int to specify which league it is in from LeagueType
      */
-    private function teams($league) {
+    private function teams($league)
+    {
         $headers = array('Team', 'Played', 'Won', 'Drawn', 'Lost', 'Points For', 'Points Against', 'Total Points');
         $clubs = DB::table('clubs')->get();
         $divisions = DB::table('teams')
@@ -57,7 +59,8 @@ class PagesController extends Controller
      * makes a view to return
      * @return view A view to the mens league with the database queryed
      */
-    public function mens() {
+    public function mens()
+    {
         $league = (LeagueType::MENS);
         return $this->teams($league);
     }
@@ -67,7 +70,8 @@ class PagesController extends Controller
      * makes a view to return
      * @return view A view to the ladies league with the database queryed
      */
-    public function ladies() {
+    public function ladies()
+    {
         $league = LeagueType::LADIES;
         return $this->teams($league);
     }
@@ -75,11 +79,18 @@ class PagesController extends Controller
     /**
      * Query the database with the teamID, makes the 10 fixtures and
      */
-    public function fixtures($club, $team) {
+    public function fixtures($club, $team)
+    {
+
         $teamChar = substr($team, -1);
         $leagueStr = strtoupper(substr($team, 0, -1));
         $league = LeagueType::getValueFromString($leagueStr);
         $fullTeamName = ucwords(strtolower($club)) . ' ' . strtoupper($teamChar) . ' ' . LeagueType::getDescription($league);
+        $clubSearch = DB::table('clubs')->where("clubName", $club)->get();
+        if (count($clubSearch) != 1)
+        {
+            return redirect('clubs');
+        }
 
         $id = DB::table('clubs')
             ->join('teams', 'clubs.clubID', '=', 'teams.clubID')
@@ -87,6 +98,11 @@ class PagesController extends Controller
             ->where("teamChar", $teamChar)
             ->where("leagueType", $league)
             ->value('teams.teamID');
+
+        if (count($id) != 1)
+        {
+            return redirect($club);
+        }
 
         $result = DB::select(DB::raw(config('sql.fixtures')), [$id, $id]);
         $monday = config('controlConsts.start');
