@@ -99,7 +99,7 @@ class PagesController extends Controller
             ->where("leagueType", $league)
             ->value('teams.teamID');
 
-        if (count($id) != 1)
+        if ($id == '')
         {
             return redirect($club);
         }
