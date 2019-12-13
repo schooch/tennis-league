@@ -149,7 +149,10 @@ class PagesController extends Controller
             }
             array_push($count, count($teams));
         }
-
+        if(count($result) == 0)
+        {
+            return redirect('clubs');
+        }
         foreach ($result as $leagueType)
         {
             for ($i = count($leagueType); $i < max($count); $i++)
