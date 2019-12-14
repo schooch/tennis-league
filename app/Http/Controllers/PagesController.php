@@ -115,7 +115,8 @@ class PagesController extends Controller
                 date_add($monday, date_interval_create_from_date_string("1 week"));
                 array_push($fixtures, $fix);
             }
-            $fix = new Fixture($fixture->weekNumber,
+            $fix = new Fixture($fixture->fixtureID,
+                     $fixture->weekNumber,
                      $fixture->home,
                      $fixture->away,
                      $monday,

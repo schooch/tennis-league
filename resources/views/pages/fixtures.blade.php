@@ -17,11 +17,11 @@
         <tbody>
             @foreach ($fixtures as $fixture)
                 <tr scope="row">
-                    <td scope="col"><a>{{$fixture->week}}</a></td>
-                    <td scope="col"><a>{{$fixture->home}}</a></td>
-                    <td scope="col"><a>{{$fixture->away}}</a></td>
-                    <td scope="col"><a>{{$fixture->monday}}</a></td>
-                    <td scope="col"><a>{{$fixture->day}}</a></td>
+                    <td scope="col"><a href="/fixture/{{$fixture->id}}">{{$fixture->week}}</a></td>
+                    <td scope="col"><a href="/fixture/{{$fixture->id}}">{{$fixture->home}}</a></td>
+                    <td scope="col"><a href="/fixture/{{$fixture->id}}">{{$fixture->away}}</a></td>
+                    <td scope="col"><a href="/fixture/{{$fixture->id}}">{{$fixture->monday}}</a></td>
+                    <td scope="col"><a href="/fixture/{{$fixture->id}}">{{$fixture->day}}</a></td>
                 </tr>
             @endforeach
         </tbody>

@@ -2,14 +2,16 @@
 namespace App\Classes;
 
 class Fixture{
+    public $id;
     public $week;
     public $home;
     public $away;
     public $monday;
     public $matchDate;
 
-    public function __construct($week, $home, $away, $monday, $day)
+    public function __construct($id, $week, $home, $away, $monday, $day)
     {
+        $this->id =$id;
         $this->week = $week;
         $this->home = $home;
         $this->away = $away;
@@ -21,7 +23,7 @@ class Fixture{
     }
 
     public static function restWeek($monday){
-        $instance = new self(' ', ' ', ' ', $monday, 0);
+        $instance = new self(' ', ' ', ' ', ' ', $monday, 0);
         $instance->day = '';
         return $instance;
     }
