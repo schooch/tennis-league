@@ -76,6 +76,14 @@ class PagesController extends Controller
         return $this->teams($league);
     }
 
+    public function fixture($id)
+    {
+        $result = DB::table('fixtures')
+            ->where('fixtureID', $id)
+            ->get();
+        return $result;
+    }
+
     /**
      * Query the database with the teamID, makes the 10 fixtures and
      */
