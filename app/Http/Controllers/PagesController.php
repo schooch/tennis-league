@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Enums\LeagueType;
 use Illuminate\Support\Facades\DB;
 use App\Classes\Fixture;
+use DateTime;
 
 class PagesController extends Controller
 {
@@ -89,7 +90,7 @@ class PagesController extends Controller
                      'fixtures.weekNum',
                      'venues.venue',
                      'fixtures.MatchDate',
-                     'homeT.dayOfWeekOffset',
+                     'homeT.dayOfWeekOffset as offSet',
                      'homeC.clubName as homeClub',
                      'homeT.teamChar as homeChar',
                      'awayC.clubName as awayClub',
@@ -98,6 +99,25 @@ class PagesController extends Controller
         if ($result == [])
         {
             return redirect("/");
+        }
+        if ($result->MatchDate == null)
+        {
+            $date = config('controlConsts.start');
+            for ($i = 1; $i < $result->weekNum; $i++)
+            {
+                date_add($date, date_interval_create_from_date_string("1 week"));
+                if (in_array($date, config('controlConsts.rest')))
+                {
+                    date_add($date, date_interval_create_from_date_string("1 week"));
+                }
+            }
+            date_add($date, date_interval_create_from_date_string($result->offSet . " days"));
+            $result->MatchDate = $date->format('d/m/y');
+        }
+        else
+        {
+            $date = new DateTime($result->MatchDate);
+            $result->MatchDate = $date->format('d-m-y'); //TODO change this to '/'
         }
         //TODO return the planned match data. StartMonday + weekNum * 7 + restweek*7
         return view('pages.fixture', ['result' => $result]);
@@ -134,7 +154,8 @@ class PagesController extends Controller
         $result = DB::select(DB::raw(config('sql.fixtures')), [$id, $id]);
         $monday = config('controlConsts.start');
         $fixtures = [];
-        foreach ($result as $fixture)
+        $count = 0;
+        for ($i = 0; $i < 10; $i++)
         {
             if (in_array($monday, config('controlConsts.rest')))
             {
@@ -142,15 +163,37 @@ class PagesController extends Controller
                 date_add($monday, date_interval_create_from_date_string("1 week"));
                 array_push($fixtures, $fix);
             }
-            $fix = new Fixture($fixture->fixtureID,
-                     $fixture->weekNumber,
-                     $fixture->home,
-                     $fixture->away,
-                     $monday,
-                     $fixture->day);
-            array_push($fixtures, $fix);
-            date_add($monday, date_interval_create_from_date_string("1 week"));
+            if ($count >= count($result))
+            {
+                $fix = Fixture::restWeek($monday);
+                date_add($monday, date_interval_create_from_date_string("1 week"));
+                array_push($fixtures, $fix);
+            }
+            elseif ($result[$count]->weekNumber != $i+1)
+            {
+                $fix = Fixture::restWeek($monday);
+                date_add($monday, date_interval_create_from_date_string("1 week"));
+                array_push($fixtures, $fix);
+            }
+            else
+            {
+                $fix = new Fixture($result[$count]->fixtureID,
+                    $result[$count]->weekNumber,
+                    $result[$count]->home,
+                    $result[$count]->away,
+                    $monday,
+                    $result[$count]->day);
+                array_push($fixtures, $fix);
+                date_add($monday, date_interval_create_from_date_string("1 week"));
+                $count++;
+            }
         }
+        /*
+        foreach ($result as $fixture)
+        {
+
+
+        }*/
         return view('pages.fixtures', ['fixtures' => $fixtures,
                                        'team' => $fullTeamName]);
     }
