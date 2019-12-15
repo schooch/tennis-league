@@ -79,9 +79,28 @@ class PagesController extends Controller
     public function fixture($id)
     {
         $result = DB::table('fixtures')
+            ->join('venues', 'fixtures.venueID', 'venues.venueID')
+            ->join('teams as homeT', 'fixtures.homeTeamID', 'homeT.teamID')
+            ->join('teams as awayT', 'fixtures.awayTeamID', 'awayT.teamID')
+            ->join('clubs as homeC', 'homeT.clubID', 'homeC.clubID')
+            ->join('clubs as awayC', 'awayT.clubID', 'awayC.clubID')
             ->where('fixtureID', $id)
-            ->get();
-        return $result;
+            ->select('homeT.division',
+                     'fixtures.weekNum',
+                     'venues.venue',
+                     'fixtures.MatchDate',
+                     'homeT.dayOfWeekOffset',
+                     'homeC.clubName as homeClub',
+                     'homeT.teamChar as homeChar',
+                     'awayC.clubName as awayClub',
+                     'awayT.teamChar as awayChar')
+            ->first();
+        if (count($result) != 1)
+        {
+            return redirect("/");
+        }
+        //TODO return the planned match data. StartMonday + weekNum * 7 + restweek*7
+        return view('pages.fixture', ['result' => $result]);
     }
 
     /**
