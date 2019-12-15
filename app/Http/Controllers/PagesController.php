@@ -95,7 +95,7 @@ class PagesController extends Controller
                      'awayC.clubName as awayClub',
                      'awayT.teamChar as awayChar')
             ->first();
-        if (count($result) != 1)
+        if ($result == [])
         {
             return redirect("/");
         }
