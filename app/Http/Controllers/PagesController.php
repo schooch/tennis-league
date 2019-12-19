@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Enums\LeagueType;
 use Illuminate\Support\Facades\DB;
 use App\Classes\Fixture;
+use App\Classes\FixturePlayers;
 use DateTime;
 
 class PagesController extends Controller
@@ -19,16 +20,16 @@ class PagesController extends Controller
     {
         $height = count($toRotate);
         $width = count($toRotate[0]);
-        $result = array();
+        $fixture = array();
         for ($i = 0; $i < $width; $i++) {
             $row = array();
             for ($j = 0; $j < $height; $j++) {
                 array_push($row, $toRotate[$j][$i]);
             }
-            array_push($result, $row);
+            array_push($fixture, $row);
         }
 
-        return $result;
+        return $fixture;
     }
 
 
@@ -79,7 +80,8 @@ class PagesController extends Controller
 
     public function fixture($id)
     {
-        $result = DB::table('fixtures')
+        $players = null;
+        $fixture = DB::table('fixtures')
             ->join('venues', 'fixtures.venueID', 'venues.venueID')
             ->join('teams as homeT', 'fixtures.homeTeamID', 'homeT.teamID')
             ->join('teams as awayT', 'fixtures.awayTeamID', 'awayT.teamID')
@@ -96,14 +98,14 @@ class PagesController extends Controller
                      'awayC.clubName as awayClub',
                      'awayT.teamChar as awayChar')
             ->first();
-        if ($result == [])
+        if ($fixture == [])
         {
             return redirect("/");
         }
-        if ($result->MatchDate == null)
+        if ($fixture->MatchDate == null)
         {
             $date = config('controlConsts.start');
-            for ($i = 1; $i < $result->weekNum; $i++)
+            for ($i = 1; $i < $fixture->weekNum; $i++)
             {
                 date_add($date, date_interval_create_from_date_string("1 week"));
                 if (in_array($date, config('controlConsts.rest')))
@@ -111,16 +113,19 @@ class PagesController extends Controller
                     date_add($date, date_interval_create_from_date_string("1 week"));
                 }
             }
-            date_add($date, date_interval_create_from_date_string($result->offSet . " days"));
-            $result->MatchDate = $date->format('d/m/y');
+            date_add($date, date_interval_create_from_date_string($fixture->offSet . " days"));
+            $fixture->MatchDate = $date->format('d/m/y');
         }
         else
         {
-            $date = new DateTime($result->MatchDate);
-            $result->MatchDate = $date->format('d-m-y'); //TODO change this to '/'
+            $date = new DateTime($fixture->MatchDate);
+            $fixture->MatchDate = $date->format('d-m-y'); //TODO change this to '/'
+            $players = new FixturePlayers($id);
+            //return $players->awayB2->playerName. ' ';
         }
-        //TODO return the planned match data. StartMonday + weekNum * 7 + restweek*7
-        return view('pages.fixture', ['result' => $result]);
+        return view('pages.fixture', ['fixture' => $fixture,
+                                      'players' => $players
+                                    ]);
     }
 
     /**
@@ -151,7 +156,7 @@ class PagesController extends Controller
             return redirect($club);
         }
 
-        $result = DB::select(DB::raw(config('sql.fixtures')), [$id, $id]);
+        $fixture = DB::select(DB::raw(config('sql.fixtures')), [$id, $id]);
         $monday = config('controlConsts.start');
         $fixtures = [];
         $count = 0;
@@ -163,13 +168,13 @@ class PagesController extends Controller
                 date_add($monday, date_interval_create_from_date_string("1 week"));
                 array_push($fixtures, $fix);
             }
-            if ($count >= count($result))
+            if ($count >= count($fixture))
             {
                 $fix = Fixture::restWeek($monday);
                 date_add($monday, date_interval_create_from_date_string("1 week"));
                 array_push($fixtures, $fix);
             }
-            elseif ($result[$count]->weekNumber != $i+1)
+            elseif ($fixture[$count]->weekNumber != $i+1)
             {
                 $fix = Fixture::restWeek($monday);
                 date_add($monday, date_interval_create_from_date_string("1 week"));
@@ -177,19 +182,19 @@ class PagesController extends Controller
             }
             else
             {
-                $fix = new Fixture($result[$count]->fixtureID,
-                    $result[$count]->weekNumber,
-                    $result[$count]->home,
-                    $result[$count]->away,
+                $fix = new Fixture($fixture[$count]->fixtureID,
+                    $fixture[$count]->weekNumber,
+                    $fixture[$count]->home,
+                    $fixture[$count]->away,
                     $monday,
-                    $result[$count]->day);
+                    $fixture[$count]->day);
                 array_push($fixtures, $fix);
                 date_add($monday, date_interval_create_from_date_string("1 week"));
                 $count++;
             }
         }
         /*
-        foreach ($result as $fixture)
+        foreach ($fixture as $fixture)
         {
 
 
@@ -200,7 +205,7 @@ class PagesController extends Controller
 
     public function club($club)
     {
-        $result = array();
+        $fixture = array();
         $count = array();
         foreach (LeagueType::toArray() as $key => $val)
         {
@@ -216,24 +221,24 @@ class PagesController extends Controller
             }
             if(count($teams) > 0)
             {
-                array_push($result, $teams);
+                array_push($fixture, $teams);
             }
             array_push($count, count($teams));
         }
-        if(count($result) == 0)
+        if(count($fixture) == 0)
         {
             return redirect('clubs');
         }
-        foreach ($result as $leagueType)
+        foreach ($fixture as $leagueType)
         {
             for ($i = count($leagueType); $i < max($count); $i++)
             {
                 $leagueType[$i] = null;
             }
         }
-        //return $this::rotate($result);
+        //return $this::rotate($fixture);
         return view('pages.club', ['club' => ucwords(strtolower($club)),
-                                'teams' => $this::rotate($result)]);
+                                'teams' => $this::rotate($fixture)]);
     }
 
     public function clubs()
