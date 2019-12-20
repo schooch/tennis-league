@@ -62,17 +62,29 @@
                     <td><div>{{$players->homeB2->playerName}}</div></td>
                     <td><div>{{$players->awayB2->playerName}}</div></td>
                 </tr>
-                <tr>
-                    <td><div>TODO</div></td><td><div>A</div></td><td><div>B</div></td>
-                </tr>
-                <tr>
-                    <td><div>A</div></td><td><div>AvA</div></td><td><div>AvB</div></td>
-                </tr>
-                <tr>
-                    <td><div>B</div></td><td><div>BvA</div></td><td><div>BvB</div></td>
-                </tr>
             </tbody>
         </table>
+        @foreach ($matches as $key => $match)
+            <div class="container">
+                <table class="table table-bordered">
+                    <tr>
+                    <th colspan="9">{{$key}}</th>
+                    </tr>
+                    <tr>
+                        <td>Home</td>
+                        @foreach ($match as $set)
+                            <td>{{$set->homeScore}}</td>
+                        @endforeach
+                    </tr>
+                    <tr>
+                        <td>Away</td>
+                        @foreach ($match as $set)
+                            <td>{{$set->awayScore}}</td>
+                        @endforeach
+                    </tr>
+                </table>
+            </div>
+        @endforeach
     @endisset
 </div>
 @endsection

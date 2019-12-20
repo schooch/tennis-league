@@ -7,6 +7,7 @@ use App\Enums\LeagueType;
 use Illuminate\Support\Facades\DB;
 use App\Classes\Fixture;
 use App\Classes\FixturePlayers;
+use App\Classes\Matches;
 use DateTime;
 
 class PagesController extends Controller
@@ -32,7 +33,6 @@ class PagesController extends Controller
         return $fixture;
     }
 
-
     /**
      * querys the database for which leage to get the teams. returns a list of list of DB.
      * @param int $league An int to specify which league it is in from LeagueType
@@ -54,6 +54,27 @@ class PagesController extends Controller
         return view('pages.league', ['league' => $league,
                                      'teams' => $teams,
                                      'headers' => $headers]);
+    }
+
+    private function queryFixture($id)
+    {
+        return DB::table('fixtures')
+            ->join('venues', 'fixtures.venueID', 'venues.venueID')
+            ->join('teams as homeT', 'fixtures.homeTeamID', 'homeT.teamID')
+            ->join('teams as awayT', 'fixtures.awayTeamID', 'awayT.teamID')
+            ->join('clubs as homeC', 'homeT.clubID', 'homeC.clubID')
+            ->join('clubs as awayC', 'awayT.clubID', 'awayC.clubID')
+            ->where('fixtureID', $id)
+            ->select('homeT.division',
+                    'fixtures.weekNum',
+                    'venues.venue',
+                    'fixtures.MatchDate',
+                    'homeT.dayOfWeekOffset as offSet',
+                    'homeC.clubName as homeClub',
+                    'homeT.teamChar as homeChar',
+                    'awayC.clubName as awayClub',
+                    'awayT.teamChar as awayChar')
+            ->first();
     }
 
     /**
@@ -80,24 +101,8 @@ class PagesController extends Controller
 
     public function fixture($id)
     {
-        $players = null;
-        $fixture = DB::table('fixtures')
-            ->join('venues', 'fixtures.venueID', 'venues.venueID')
-            ->join('teams as homeT', 'fixtures.homeTeamID', 'homeT.teamID')
-            ->join('teams as awayT', 'fixtures.awayTeamID', 'awayT.teamID')
-            ->join('clubs as homeC', 'homeT.clubID', 'homeC.clubID')
-            ->join('clubs as awayC', 'awayT.clubID', 'awayC.clubID')
-            ->where('fixtureID', $id)
-            ->select('homeT.division',
-                     'fixtures.weekNum',
-                     'venues.venue',
-                     'fixtures.MatchDate',
-                     'homeT.dayOfWeekOffset as offSet',
-                     'homeC.clubName as homeClub',
-                     'homeT.teamChar as homeChar',
-                     'awayC.clubName as awayClub',
-                     'awayT.teamChar as awayChar')
-            ->first();
+        $players = $matches = null;
+        $fixture = $this->queryFixture($id);
         if ($fixture == [])
         {
             return redirect("/");
@@ -119,12 +124,14 @@ class PagesController extends Controller
         else
         {
             $date = new DateTime($fixture->MatchDate);
-            $fixture->MatchDate = $date->format('d-m-y'); //TODO change this to '/'
+            $fixture->MatchDate = $date->format('d/m/y');
             $players = new FixturePlayers($id);
-            //return $players->awayB2->playerName. ' ';
+            $matches = new Matches($id);
+            $matches = $matches->getDict();
         }
         return view('pages.fixture', ['fixture' => $fixture,
-                                      'players' => $players
+                                      'players' => $players,
+                                      'matches' => $matches
                                     ]);
     }
 
