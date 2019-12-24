@@ -85,6 +85,11 @@
                 </table>
             </div>
         @endforeach
+    @else
+        @if (!Auth::guest())
+            logged
+        @endif
     @endisset
+
 </div>
 @endsection

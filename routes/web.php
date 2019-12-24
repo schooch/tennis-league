@@ -17,9 +17,9 @@ Route::get('/ladies', 'PagesController@ladies');
 Route::get('/fixture/{id}', 'PagesController@fixture');
 Route::get('/clubs', 'PagesController@clubs');
 Route::get('/{club}/{team}', 'PagesController@fixtures');
-Route::get('/{club}', 'PagesController@club');
 
 Route::resource('posts', 'PostsController');
 Auth::routes();
 
+Route::get('/{club}', 'PagesController@club');
 Route::get('/home', 'HomeController@index')->name('home');
