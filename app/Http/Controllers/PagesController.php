@@ -98,43 +98,6 @@ class PagesController extends Controller
         $league = LeagueType::LADIES;
         return $this->teams($league);
     }
-
-    public function fixture($id)
-    {
-        $players = $matches = null;
-        $fixture = $this->queryFixture($id);
-        if ($fixture == [])
-        {
-            return redirect("/");
-        }
-        if ($fixture->MatchDate == null)
-        {
-            $date = config('controlConsts.start');
-            for ($i = 1; $i < $fixture->weekNum; $i++)
-            {
-                date_add($date, date_interval_create_from_date_string("1 week"));
-                if (in_array($date, config('controlConsts.rest')))
-                {
-                    date_add($date, date_interval_create_from_date_string("1 week"));
-                }
-            }
-            date_add($date, date_interval_create_from_date_string($fixture->offSet . " days"));
-            $fixture->MatchDate = $date->format('d/m/y');
-        }
-        else
-        {
-            $date = new DateTime($fixture->MatchDate);
-            $fixture->MatchDate = $date->format('d/m/y');
-            $players = new FixturePlayers($id);
-            $matches = new Matches($id);
-            $matches = $matches->getDict();
-        }
-        return view('pages.fixture', ['fixture' => $fixture,
-                                      'players' => $players,
-                                      'matches' => $matches
-                                    ]);
-    }
-
     /**
      * Query the database with the teamID, makes the 10 fixtures and
      */
