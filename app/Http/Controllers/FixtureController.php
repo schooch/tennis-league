@@ -40,7 +40,7 @@ class FixtureController extends Controller
             $matches = new Matches($id);
             $matches = $matches->getDict();
         }
-        return view('pages.fixture', ['fixture' => $fixture,
+        return view('fixtures.fixture', ['fixture' => $fixture,
                                       'players' => $players,
                                       'matches' => $matches
                                     ]);
@@ -67,4 +67,4 @@ class FixtureController extends Controller
             ->first();
     }
 
-}
+} 
