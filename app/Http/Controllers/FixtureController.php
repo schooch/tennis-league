@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Classes\Fixture;
 use App\Classes\FixturePlayers;
 use App\Classes\Matches;
+use App\Rules\UniqPlayers;
+use App\Rules\CorrectClubPlayer;
+use App\Rules\Pairs;
+use App\Rules\EnoughPairs;
 use DateTime;
 
 class FixtureController extends Controller
@@ -18,6 +23,7 @@ class FixtureController extends Controller
         {
             return redirect("/");
         }
+        //Match hasn't happened
         if ($fixture->MatchDate == null)
         {
             $date = config('controlConsts.start');
@@ -40,10 +46,30 @@ class FixtureController extends Controller
             $matches = new Matches($id);
             $matches = $matches->getDict();
         }
-        return view('fixtures.fixture', ['fixture' => $fixture,
+        $homePlayers = $this->clubPlayers($fixture->homeClubID);
+
+        $awayPlayers = $this->clubPlayers($fixture->awayClubID);
+        //players is for the ones who played, home/awayPlayers is for list boxes
+        return view('fixtures.fixture', ['id' => $id,
+                                      'fixture' => $fixture,
                                       'players' => $players,
-                                      'matches' => $matches
+                                      'matches' => $matches,
+                                      'homePlayers' => $homePlayers,
+                                      'awayPlayers' => $awayPlayers
                                     ]);
+    }
+
+    private function clubPlayers($club)
+    {
+        $result = DB::table('players')
+        ->where('clubID', $club)
+        ->get();
+        //return $result;
+        $toReturn = array();
+        foreach ($result as $key => $value) {
+            $toReturn[$value->playerID] = $value->playerName;
+        }
+        return $toReturn;
     }
 
     private function queryFixture($id)
@@ -61,10 +87,20 @@ class FixtureController extends Controller
                     'fixtures.MatchDate',
                     'homeT.dayOfWeekOffset as offSet',
                     'homeC.clubName as homeClub',
+                    'homeC.clubID as homeClubID',
                     'homeT.teamChar as homeChar',
                     'awayC.clubName as awayClub',
+                    'awayC.clubID as awayClubID',
                     'awayT.teamChar as awayChar')
             ->first();
     }
 
-} 
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'players' => [new UniqPlayers(), new CorrectClubPlayer($request->id), new EnoughPairs, new Pairs]
+        ]);
+        return $request;
+    }
+
+}
