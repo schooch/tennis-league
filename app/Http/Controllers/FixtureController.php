@@ -42,8 +42,8 @@ class FixtureController extends Controller
         }
         else
         {
-            $date = new DateTime($fixture->MatchDate);
-            $fixture->MatchDate = $date->format('d/m/y');
+            $date = new DateTime($fixture->matchDate);
+            $fixture->matchDate = $date->format('d/m/y');
             $players = new FixturePlayers($id);
             $matches = new Matches($id);
             $matches = $matches->getDict();

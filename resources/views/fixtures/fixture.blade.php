@@ -91,7 +91,7 @@
         {!! Form::open(['action' => 'FixtureController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
         <div class="form-group">
             {{Form::label('Date', 'Match Date:')}}
-            {!! Form::date('matchDate', \Carbon\Carbon::now(), ['class' => 'form-control', 'max' => \Carbon\Carbon::now()->toDateString()]) !!}
+            {!! Form::date('matchDate', \Carbon\Carbon::now(), ['class' => 'form-control', 'max' => \Carbon\Carbon::nowgit ()->toDateString()]) !!}
         </div>
         <div class="form-group">
         <div class="form-group">
