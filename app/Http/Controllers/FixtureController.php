@@ -11,6 +11,8 @@ use App\Rules\UniqPlayers;
 use App\Rules\CorrectClubPlayer;
 use App\Rules\Pairs;
 use App\Rules\EnoughPairs;
+use App\Rules\ValidMatchPairs;
+use App\Rules\ValidMatchScore;
 use DateTime;
 
 class FixtureController extends Controller
@@ -24,7 +26,7 @@ class FixtureController extends Controller
             return redirect("/");
         }
         //Match hasn't happened
-        if ($fixture->MatchDate == null)
+        if ($fixture->matchDate == null)
         {
             $date = config('controlConsts.start');
             for ($i = 1; $i < $fixture->weekNum; $i++)
@@ -36,7 +38,7 @@ class FixtureController extends Controller
                 }
             }
             date_add($date, date_interval_create_from_date_string($fixture->offSet . " days"));
-            $fixture->MatchDate = $date->format('d/m/y');
+            $fixture->matchDate = $date->format('d/m/y');
         }
         else
         {
@@ -84,7 +86,7 @@ class FixtureController extends Controller
             ->select('homeT.division',
                     'fixtures.weekNum',
                     'venues.venue',
-                    'fixtures.MatchDate',
+                    'fixtures.MatchDate as matchDate',
                     'homeT.dayOfWeekOffset as offSet',
                     'homeC.clubName as homeClub',
                     'homeC.clubID as homeClubID',
@@ -97,9 +99,12 @@ class FixtureController extends Controller
 
     public function store(Request $request)
     {
+        //return $request->matchDate;
         $this->validate($request, [
-            'players' => [new UniqPlayers(), new CorrectClubPlayer($request->id), new EnoughPairs, new Pairs]
-        ]);
+            'matchDate' => 'before_or_equal:today',
+            'players' => [new UniqPlayers(), new CorrectClubPlayer($request->id), new EnoughPairs, new Pairs],
+            'match' => [new ValidMatchPairs($request->players), new ValidMatchScore]
+            ]);
         return $request;
     }
 
