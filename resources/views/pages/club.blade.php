@@ -19,13 +19,13 @@
             @foreach ($teams as $char)
                 <tr scope="row" class="table-row">
                     @foreach ($char as $team)
+                    <td scope="col" class="table-link">
                         @isset ($team)
-                            <td scope="col" class="table-link">
                                 <a href="/{{$club}}/{{$team->leagueType}}{{$team->teamChar}}">
                                     {{$team->teamChar}}
                                 </a>
-                            </td>
-                        @endisset
+                            @endisset
+                        </td>
                     @endforeach
                 </tr>
             @endforeach
