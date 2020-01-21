@@ -93,64 +93,114 @@
             {{Form::label('Date', 'Match Date:')}}
             {!! Form::date('matchDate', \Carbon\Carbon::now(), ['class' => 'form-control', 'max' => \Carbon\Carbon::now()->toDateString()]) !!}
         </div>
+        <table>
+            <tr>
+                <div class="form-group">
+                    <td>{{Form::label('homeA', 'Home A Pair')}}</td>
+                    <td>{{Form::select('players[home][a1]', [null=>'None'] + $homePlayers)}}</td>
+                    <td>{{Form::select('players[home][a2]', [null=>'None'] + $homePlayers)}}</td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group">
+                    <td>{{Form::label('homeB', 'Home B Pair')}}</td>
+                    <td>{{Form::select('players[home][b1]', [null=>'None'] + $homePlayers)}}</td>
+                    <td>{{Form::select('players[home][b2]', [null=>'None'] + $homePlayers)}}</td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group">
+                    <td>{{Form::label('awayA', 'Away A Pair')}}</td>
+                    <td>{{Form::select('players[away][a1]', [null=>'None'] + $awayPlayers)}}</td>
+                    <td>{{Form::select('players[away][a2]', [null=>'None'] + $awayPlayers)}}</td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group">
+                    <td>{{Form::label('awayB', 'Away B Pair')}}</td>
+                    <td>{{Form::select('players[away][b1]', [null=>'None'] + $awayPlayers)}}</td>
+                    <td>{{Form::select('players[away][b2]', [null=>'None'] + $awayPlayers)}}</td>
+                </div>
+            </tr>
+        </table>
+        <table class="table score">
+            <tr>
+                <td colspan=4>{{Form::label('AvA', 'Home A vs Away A')}}</td>
+            </tr>
+            <tr>
+                <div class="form-group">
+                    <td>Home:</td><td>{{Form::number('match[AA][1][home]', 0, ['min'=>0])}}</td><td>{{Form::number('match[AA][2][home]', 0, ['min'=>0])}}</td><td>{{Form::number('match[AA][3][home]', 0, ['min'=>0])}}</td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group">
+                    <td>Away:</td><td>{{Form::number('match[AA][1][away]', 0, ['min'=>0])}}</td><td>{{Form::number('match[AA][2][away]', 0, ['min'=>0])}}</td><td>{{Form::number('match[AA][3][away]', 0, ['min'=>0])}}</td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group">
+                <td>Tie Break:</td><td>{{Form::checkbox('match[AA][1][tie]', 1)}}</td><td>{{Form::checkbox('match[AA][2][tie]', 1)}}</td><td></td>
+                </div>
+            </tr>
+            <tr>
+                <td colspan=4>{{Form::label('AvB', 'Home A vs Away B')}}</td>
+            </tr>
+            <tr>
+                <div class="form-group">
+                    <td>Home:</td><td>{{Form::number('match[AB][1][home]', 0, ['min'=>0])}}</td><td>{{Form::number('match[AB][2][home]', 0, ['min'=>0])}}</td><td>{{Form::number('match[AB][3][home]', 0, ['min'=>0])}}</td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group">
+                    <td>Away:</td><td>{{Form::number('match[AB][1][away]', 0, ['min'=>0])}}</td><td>{{Form::number('match[AB][2][away]', 0, ['min'=>0])}}</td><td>{{Form::number('match[AB][3][away]', 0, ['min'=>0])}}</td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group">
+                <td>Tie Break:</td><td>{{Form::checkbox('match[AB][1][tie]', 1)}}</td><td>{{Form::checkbox('match[AB][2][tie]', 1)}}</td><td></td>
+                </div>
+            </tr>
+            <tr>
+                <td colspan=4>{{Form::label('BvA', 'Home B vs Away A')}}</td>
+            </tr>
+            <tr>
+                <div class="form-group">
+                    <td>Home:</td><td>{{Form::number('match[BA][1][home]', 0, ['min'=>0])}}</td><td>{{Form::number('match[BA][2][home]', 0, ['min'=>0])}}</td><td>{{Form::number('match[BA][3][home]', 0, ['min'=>0])}}</td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group">
+                    <td>Away:</td><td>{{Form::number('match[BA][1][away]', 0, ['min'=>0])}}</td><td>{{Form::number('match[BA][2][away]', 0, ['min'=>0])}}</td><td>{{Form::number('match[BA][3][away]', 0, ['min'=>0])}}</td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group">
+                <td>Tie Break:</td><td>{{Form::checkbox('match[BA][1][tie]', 1)}}</td><td>{{Form::checkbox('match[BA][2][tie]', 1)}}</td><td></td>
+                </div>
+            </tr>
+            <tr>
+                <td colspan=4>{{Form::label('BvB', 'Home B vs Away B')}}</td>
+            </tr>
+            <tr>
+                <div class="form-group">
+                    <td>Home:</td><td>{{Form::number('match[BB][1][home]', 0, ['min'=>0])}}</td><td>{{Form::number('match[BB][2][home]', 0, ['min'=>0])}}</td><td>{{Form::number('match[BB][3][home]', 0, ['min'=>0])}}</td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group">
+                    <td>Away:</td><td>{{Form::number('match[BB][1][away]', 0, ['min'=>0])}}</td><td>{{Form::number('match[BB][2][away]', 0, ['min'=>0])}}</td><td>{{Form::number('match[BB][3][away]', 0, ['min'=>0])}}</td>
+                </div>
+            </tr>
+            <tr>
+                <div class="form-group">
+                <td>Tie Break:</td><td>{{Form::checkbox('match[BB][1][tie]', 1)}}</td><td>{{Form::checkbox('match[BB][2][tie]', 1)}}</td><td></td>
+                </div>
+            </tr>
+        </table>
         <div class="form-group">
-        <div class="form-group">
-            {{Form::label('homeA', 'Home A Pair')}}
-
-                {{Form::select('players[home][a1]', [null=>'None'] + $homePlayers)}}
-                {{Form::select('players[home][a2]', [null=>'None'] + $homePlayers)}}
+            {{Form::label('ScoreSheet', 'Score Sheet')}}<br>
+            {{Form::file('cover_image')}}
         </div>
-        <div class="form-group">
-            {{Form::label('homeB', 'Home B Pair')}}
-
-                {{Form::select('players[home][b1]', [null=>'None'] + $homePlayers)}}
-                {{Form::select('players[home][b2]', [null=>'None'] + $homePlayers)}}
-        </div>
-        <div class="form-group">
-            {{Form::label('awayA', 'Away A Pair')}}
-
-                {{Form::select('players[away][a1]', [null=>'None'] + $awayPlayers)}}
-                {{Form::select('players[away][a2]', [null=>'None'] + $awayPlayers)}}
-        </div>
-        <div class="form-group">
-            {{Form::label('awayB', 'Away B Pair')}}
-
-                {{Form::select('players[away][b1]', [null=>'None'] + $awayPlayers)}}
-                {{Form::select('players[away][b2]', [null=>'None'] + $awayPlayers)}}
-        </div>
-        <div class="form-group">
-            {{Form::label('AvA', 'Home A vs Away A')}}<br>
-
-            Home: {{Form::number('match[AA][1][home]', 0, ['min'=>0])}}{{Form::number('match[AA][2][home]', 0, ['min'=>0])}}{{Form::number('match[AA][3][home]', 0, ['min'=>0])}}<br>
-            Away: {{Form::number('match[AA][1][away]', 0, ['min'=>0])}}{{Form::number('match[AA][2][away]', 0, ['min'=>0])}}{{Form::number('match[AA][3][away]', 0, ['min'=>0])}}<br>
-            Tie Break: {{Form::checkbox('match[AA][1][tie]', 1)}}{{Form::checkbox('match[AA][2][tie]', 1)}}
-        </div>
-        <div class="form-group">
-            {{Form::label('AvB', 'Home A vs Away B')}}<br>
-
-            Home: {{Form::number('match[AB][1][home]', 0, ['min'=>0])}}{{Form::number('match[AB][2][home]', 0, ['min'=>0])}}{{Form::number('match[AB][3][home]', 0, ['min'=>0])}}<br>
-            Away: {{Form::number('match[AB][1][away]', 0, ['min'=>0])}}{{Form::number('match[AB][2][away]', 0, ['min'=>0])}}{{Form::number('match[AB][3][away]', 0, ['min'=>0])}}<br>
-            Tie Break: {{Form::checkbox('match[AB][1][tie]', 1)}}{{Form::checkbox('match[AB][2][tie]', 1)}}
-        </div>
-        <div class="form-group">
-            {{Form::label('BvA', 'Home B vs Away A')}}<br>
-
-            Home: {{Form::number('match[BA][1][home]', 0, ['min'=>0])}}{{Form::number('match[BA][2][home]', 0, ['min'=>0])}}{{Form::number('match[BA][3][home]', 0, ['min'=>0])}}<br>
-            Away: {{Form::number('match[BA][1][away]', 0, ['min'=>0])}}{{Form::number('match[BA][2][away]', 0, ['min'=>0])}}{{Form::number('match[BA][3][away]', 0, ['min'=>0])}}<br>
-            Tie Break: {{Form::checkbox('match[BA][1][tie]', 1)}}{{Form::checkbox('match[BA][2][tie]', 1)}}
-        </div>
-        <div class="form-group">
-            {{Form::label('AvA', 'Home B vs Away B')}}<br>
-
-            Home: {{Form::number('match[BB][1][home]', 0, ['min'=>0])}}{{Form::number('match[BB][2][home]', 0, ['min'=>0])}}{{Form::number('match[BB][3][home]', 0, ['min'=>0])}}<br>
-            Away: {{Form::number('match[BB][1][away]', 0, ['min'=>0])}}{{Form::number('match[BB][2][away]', 0, ['min'=>0])}}{{Form::number('match[BB][3][away]', 0, ['min'=>0])}}<br>
-            Tie Break: {{Form::checkbox('match[BB][1][tie]', 1)}}{{Form::checkbox('match[BB][2][tie]', 1)}}
-        </div>
-
-            <div class="form-group">
-                {{Form::label('ScoreSheet', 'Score Sheet')}}<br>
-                {{Form::file('cover_image')}}
-            </div>
             {{ Form::hidden('id', $id) }}
             {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
         {!! Form::close() !!}

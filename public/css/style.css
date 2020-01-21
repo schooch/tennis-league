@@ -28,3 +28,15 @@ td a {
 .right{
     text-align: right;
 }
+
+select {
+    width:100% !important;
+}
+
+.score {
+    max-width: 200px;
+}
+
+.score input{
+    width:5ch !important;
+}
