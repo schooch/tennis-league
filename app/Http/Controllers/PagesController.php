@@ -17,22 +17,6 @@ class PagesController extends Controller
         return view('pages.index');
     }
 
-    private static function rotate($toRotate)
-    {
-        $height = count($toRotate);
-        $width = count($toRotate[0]);
-        $fixture = array();
-        for ($i = 0; $i < $width; $i++) {
-            $row = array();
-            for ($j = 0; $j < $height; $j++) {
-                array_push($row, $toRotate[$j][$i]);
-            }
-            array_push($fixture, $row);
-        }
-
-        return $fixture;
-    }
-
     /**
      * querys the database for which leage to get the teams. returns a list of list of DB.
      * @param int $league An int to specify which league it is in from LeagueType
@@ -163,52 +147,8 @@ class PagesController extends Controller
                 $count++;
             }
         }
-        /*
-        foreach ($fixture as $fixture)
-        {
-
-
-        }*/
         return view('pages.fixtures', ['fixtures' => $fixtures,
                                        'team' => $fullTeamName]);
-    }
-
-    public function club($club)
-    {
-        $fixture = array();
-        $count = array();
-        foreach (LeagueType::toArray() as $key => $val)
-        {
-            $teams = DB::table('clubs')
-            ->join('teams', 'clubs.clubID', '=', 'teams.clubID')
-            ->where("clubName", $club)
-            ->where("leagueType", $val)
-            ->select('teamChar', 'leagueType')
-            ->get();
-            foreach ($teams as $team)
-            {
-                $team->leagueType = LeagueType::getDescription($team->leagueType);
-            }
-            if(count($teams) > 0)
-            {
-                array_push($fixture, $teams);
-            }
-            array_push($count, count($teams));
-        }
-        if(count($fixture) == 0)
-        {
-            return redirect('clubs');
-        }
-        foreach ($fixture as $leagueType)
-        {
-            for ($i = count($leagueType); $i < max($count); $i++)
-            {
-                $leagueType[$i] = null;
-            }
-        }
-        //return $this::rotate($fixture);
-        return view('pages.club', ['club' => ucwords(strtolower($club)),
-                                'teams' => $this::rotate($fixture)]);
     }
 
     public function clubs()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Enums\LeagueType;
 
 class ClubController extends Controller
 {
@@ -15,6 +16,22 @@ class ClubController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['index', 'show']]);
+    }
+
+    private static function rotate($toRotate)
+    {
+        $height = count($toRotate);
+        $width = count($toRotate[0]);
+        $fixture = array();
+        for ($i = 0; $i < $width; $i++) {
+            $row = array();
+            for ($j = 0; $j < $height; $j++) {
+                array_push($row, $toRotate[$j][$i]);
+            }
+            array_push($fixture, $row);
+        }
+
+        return $fixture;
     }
 
     /**
@@ -68,6 +85,39 @@ class ClubController extends Controller
      */
     public function show($id)
     {
+        $fixture = array();
+        $count = array();
+        foreach (LeagueType::toArray() as $key => $val)
+        {
+            $teams = DB::table('clubs')
+            ->join('teams', 'clubs.clubID', '=', 'teams.clubID')
+            ->where("clubName", $id)
+            ->where("leagueType", $val)
+            ->select('teamChar', 'leagueType')
+            ->get();
+            foreach ($teams as $team)
+            {
+                $team->leagueType = LeagueType::getDescription($team->leagueType);
+            }
+            if(count($teams) > 0)
+            {
+                array_push($fixture, $teams);
+            }
+            array_push($count, count($teams));
+        }
+        if(count($fixture) == 0)
+        {
+            return redirect('clubs');
+        }
+        foreach ($fixture as $leagueType)
+        {
+            for ($i = count($leagueType); $i < max($count); $i++)
+            {
+                $leagueType[$i] = null;
+            }
+        }
+        return view('clubs.show', ['club' => ucwords(strtolower($id)),
+                                    'teams' => $this::rotate($fixture)]);
         return view('clubs.show', ['name' => $id]);
     }
 

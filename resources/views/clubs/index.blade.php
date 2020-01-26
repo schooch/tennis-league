@@ -9,7 +9,7 @@
     @endif
     <ul class="list-group list-group-flush">
         @foreach ($clubs as $club)
-            <a href="/clubs/{{$club->clubName}}" class="list-group-item list-group-item-action">
+            <a href="/{{$club->clubName}}" class="list-group-item list-group-item-action">
                 {{$club->clubName}}
             </a>
         @endforeach
