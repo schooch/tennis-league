@@ -12,9 +12,14 @@
 */
 //
 //
+Route::get('/', 'PagesController@index');
+Route::get('/mens', 'PagesController@mens');
+Route::get('/ladies', 'PagesController@ladies');
+
 Route::resources([
     'fixture' => 'FixtureController'
     ]);
+//Clubs
 Route::get('/clubs', 'ClubController@index');
 Route::get('/clubs/create', 'ClubController@create');
 Route::post('/clubs', 'ClubController@store');
@@ -23,10 +28,13 @@ Route::get('/{id}/edit', 'ClubController@edit');
 Route::put('/{id}', 'ClubController@update');
 Route::delete('/{id}', 'ClubController@destroy');
 
+//Teams
+Route::get('/{club}/create', 'TeamController@create');
+Route::post('/{club}', 'TeamController@store');
+Route::get('/{club}/{team}', 'TeamController@show');
+Route::get('/{club}/{team}/edit', 'TeamController@edit');
+Route::put('/{club}/{team}', 'TeamController@update');
+Route::delete('/{club}/{team}', 'TeamController@destroy');
 
-Route::get('/', 'PagesController@index');
-Route::get('/mens', 'PagesController@mens');
-Route::get('/ladies', 'PagesController@ladies');
-Route::get('/{club}/{team}', 'PagesController@fixtures');
+// Route::get('/{club}/{team}', 'PagesController@fixtures');
 Auth::routes();
-

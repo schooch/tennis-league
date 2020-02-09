@@ -1,17 +1,20 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-    <h1>{{$club}}</h1>
+    <h1>
+        {{$club}}
+        @if (!Auth::guest() && Auth::user()->userType > 1)
+            <a href="/{{$club}}/edit" class="btn btn-primary">
+                Edit name
+            </a>
+            {!!Form::open(['action' => ['ClubController@destroy', $club], 'method' => 'DELETE', 'class' => 'pull-right'])!!}
+            {{Form::submit('Delete Club', ['class' => 'btn btn-danger'])}}
+            {!!Form::close()!!}
+    </h1>
 </div>
 <div class="container">
 
-    @if (!Auth::guest() && Auth::user()->userType > 1)
-        <a href="/{{$club}}/edit" class="btn btn-default">Edit</a>
-        {!!Form::open(['action' => ['ClubController@destroy', $club], 'method' => 'DELETE', 'class' => 'pull-right'])!!}
-            {{Form::submit('Delete', ['class' => 'btn btn-danger'])}}
-        {!!Form::close()!!}
     @endif
-    
     <table class="table table-cell-hover">
         <thead class="thead-dark">
             <tr>
@@ -32,6 +35,11 @@
                                 <a href="/{{$club}}/{{$team->leagueType}}{{$team->teamChar}}">
                                     {{$team->teamChar}}
                                 </a>
+                                @if (!Auth::guest() && Auth::user()->userType > 1)
+                                <a href="/{{$club}}/{{$team->leagueType}}{{$team->teamChar}}/edit">
+                                    Edit
+                                </a>
+                                @endif
                             @endisset
                         </td>
                     @endforeach
@@ -39,5 +47,10 @@
             @endforeach
         </tbody>
     </table>
+    @if (!Auth::guest() && Auth::user()->userType > 1)
+    <a href="/{{$club}}/create" class="btn btn-primary">
+        Add Team
+    </a>
+    @endif
 </div>
 @endsection

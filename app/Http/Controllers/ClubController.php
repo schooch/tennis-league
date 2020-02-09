@@ -117,8 +117,9 @@ class ClubController extends Controller
             }
         }
         return view('clubs.show', ['club' => ucwords(strtolower($id)),
-                                    'teams' => $this::rotate($fixture)]);
-        return view('clubs.show', ['name' => $id]);
+                                    'teams' => $this::rotate($fixture),
+                                    'leagues' => LeagueType::getKeys()
+                                    ]);
     }
 
     /**
@@ -169,6 +170,13 @@ class ClubController extends Controller
         if(auth()->user()->userType < 2)
         {
             return redirect('/clubs')->with('error', 'Unauthorized Page');
+        }
+        $teams =  DB::table('clubs')
+        ->join('teams', 'clubs.clubID', 'teams.clubID')
+        ->where('clubs.clubName', $id)->count();
+        if ($teams > 0)
+        {
+            return redirect($id)->with('error', 'Can\'t delete a club with teams.');
         }
         DB::table('clubs')
         ->where('clubName', $id)->delete();

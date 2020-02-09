@@ -17,6 +17,7 @@ use DateTime;
 
 class FixtureController extends Controller
 {
+
     public function show($id)
     {
         $players = $matches = null;

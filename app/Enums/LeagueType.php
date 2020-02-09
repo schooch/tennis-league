@@ -3,6 +3,7 @@
 namespace App\Enums;
 
 use BenSampo\Enum\Enum;
+use Illuminate\Support\Collection;
 
 /**
  * @method static static OptionOne()
@@ -54,6 +55,15 @@ final class LeagueType extends Enum
             }
         }
         return null;
+    }
+
+    public static function getTitleKeys()
+    {
+        $collection = new Collection(LeagueType::getKeys());
+        $toReturn = $collection->map(function($item, $key){
+            return ucwords(strtolower($item));
+        });
+        return $toReturn;
     }
 }
 
