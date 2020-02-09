@@ -16,6 +16,9 @@ Route::get('/', 'PagesController@index');
 Route::get('/mens', 'PagesController@mens');
 Route::get('/ladies', 'PagesController@ladies');
 
+//Players
+Route::get('/players', 'PlayerController@index');
+
 Route::resources([
     'fixture' => 'FixtureController'
     ]);
@@ -36,5 +39,4 @@ Route::get('/{club}/{team}/edit', 'TeamController@edit');
 Route::put('/{club}/{team}', 'TeamController@update');
 Route::delete('/{club}/{team}', 'TeamController@destroy');
 
-// Route::get('/{club}/{team}', 'PagesController@fixtures');
 Auth::routes();

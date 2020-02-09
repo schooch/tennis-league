@@ -8,13 +8,13 @@
                 Edit name
             </a>
             {!!Form::open(['action' => ['ClubController@destroy', $club], 'method' => 'DELETE', 'class' => 'pull-right'])!!}
-            {{Form::submit('Delete Club', ['class' => 'btn btn-danger'])}}
+                {{Form::submit('Delete Club', ['class' => 'btn btn-danger'])}}
             {!!Form::close()!!}
+            @endif
     </h1>
 </div>
 <div class="container">
 
-    @endif
     <table class="table table-cell-hover">
         <thead class="thead-dark">
             <tr>

@@ -21,6 +21,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/clubs">Clubs</a>
                 </li>
+                @if (!Auth::guest() && Auth::user()->userType > 0)
+                <li class="nav-item">
+                    <a class="nav-link" href="/players">Players</a>
+                </li>
+                @endif
             </ul>
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
