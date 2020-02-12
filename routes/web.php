@@ -16,11 +16,9 @@ Route::get('/', 'PagesController@index');
 Route::get('/mens', 'PagesController@mens');
 Route::get('/ladies', 'PagesController@ladies');
 
-//Players
-Route::get('/players', 'PlayerController@index');
-
 Route::resources([
-    'fixture' => 'FixtureController'
+    'fixture' => 'FixtureController',
+    'players' => 'PlayerController'
     ]);
 //Clubs
 Route::get('/clubs', 'ClubController@index');
