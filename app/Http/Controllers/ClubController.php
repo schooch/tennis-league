@@ -94,6 +94,7 @@ class ClubController extends Controller
             ->where("clubName", $id)
             ->where("leagueType", $val)
             ->select('teamChar', 'leagueType')
+            ->orderBy('teamChar')
             ->get();
             foreach ($teams as $team)
             {
