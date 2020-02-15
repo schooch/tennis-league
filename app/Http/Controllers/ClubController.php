@@ -85,13 +85,33 @@ class ClubController extends Controller
      */
     public function show($id)
     {
-        $fixture = array();
+        $blockUpperId = strtoupper(str_replace(' ', '', $id));
+        $teamNames = DB::table('clubs')->select('clubID', 'clubName')->get();
+        $clubName = '';
+        $idNames = [];
+        for ($i=0; $i < count($teamNames); $i++)
+        {
+            $idNames[$teamNames[$i]->clubID] = strtoupper(str_replace(' ', '', $teamNames[$i]->clubName));
+        }
+        if (in_array($blockUpperId, $idNames))
+        {
+            $id = array_search($blockUpperId, $idNames);
+            //Needs a [0] as pluck and first don't work together.
+            $clubName = DB::table('clubs')
+                ->where('clubID', $id)
+                ->pluck('clubName')[0];
+        }
+        else
+        {
+            return redirect('clubs');
+        }
+
+        $leagueTeams = array();
         $count = array();
         foreach (LeagueType::toArray() as $key => $val)
         {
-            $teams = DB::table('clubs')
-            ->join('teams', 'clubs.clubID', '=', 'teams.clubID')
-            ->where("clubName", $id)
+            $teams = DB::table('teams')
+            ->where("clubID", $id)
             ->where("leagueType", $val)
             ->select('teamChar', 'leagueType')
             ->orderBy('teamChar')
@@ -102,23 +122,20 @@ class ClubController extends Controller
             }
             if(count($teams) > 0)
             {
-                array_push($fixture, $teams);
+                array_push($leagueTeams, $teams);
             }
             array_push($count, count($teams));
         }
-        if(count($fixture) == 0)
-        {
-            return redirect('clubs');
-        }
-        foreach ($fixture as $leagueType)
+
+        foreach ($leagueTeams as $leagueType)
         {
             for ($i = count($leagueType); $i < max($count); $i++)
             {
                 $leagueType[$i] = null;
             }
         }
-        return view('clubs.show', ['club' => ucwords(strtolower($id)),
-                                    'teams' => $this::rotate($fixture),
+        return view('clubs.show', ['club' => ucwords(strtolower($clubName)),
+                                    'teams' => $this::rotate($leagueTeams),
                                     'leagues' => LeagueType::getKeys()
                                     ]);
     }
