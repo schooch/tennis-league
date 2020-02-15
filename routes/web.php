@@ -13,8 +13,11 @@
 //
 //
 Route::get('/', 'PagesController@index');
-Route::get('/mens', 'PagesController@mens');
-Route::get('/ladies', 'PagesController@ladies');
+// Route::get('/mens', 'PagesController@mens');
+// Route::get('/ladies', 'PagesController@ladies');
+
+Route::get('/{league}', 'DivisionController@index', function($league){
+})->where('league', '(mens|ladies|juniors)');
 
 Route::resources([
     'fixture' => 'FixtureController',

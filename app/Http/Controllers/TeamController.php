@@ -119,7 +119,7 @@ class TeamController extends Controller
                 $count++;
             }
         }
-        return view('pages.fixtures', ['fixtures' => $fixtures,
+        return view('fixtures.index', ['fixtures' => $fixtures,
                                        'team' => $fullTeamName]
                                     );
     }
@@ -178,6 +178,7 @@ class TeamController extends Controller
         ->where("leagueType", $league)
         ->value('teams.codeNumber');
 
+        // If a team isn't part of a division (a new team) it will go to less page.
         if ($codeNumber == '')
         {
             return $this->showNewTeam($club, $team, $fullTeamName, $league, $teamChar);

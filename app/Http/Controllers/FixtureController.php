@@ -53,7 +53,7 @@ class FixtureController extends Controller
 
         $awayPlayers = $this->clubPlayers($fixture->awayClubID);
         //players is for the ones who played, home/awayPlayers is for list boxes
-        return view('fixtures.fixture', ['id' => $id,
+        return view('fixtures.show', ['id' => $id,
                                       'fixture' => $fixture,
                                       'players' => $players,
                                       'matches' => $matches,
