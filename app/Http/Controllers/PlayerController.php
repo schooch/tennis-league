@@ -26,7 +26,13 @@ class PlayerController extends Controller
      */
     public function create()
     {
-        return "Create";
+        $result = DB::table('clubs')->select('clubID', 'clubName')->get();
+        $clubs = [];
+        foreach ($result as $value) {
+            $clubs[$value->clubID] = $value->clubName;
+        }
+        // return $clubs;
+        return view('players.create', ['clubs' => $clubs]);
     }
 
     /**
@@ -37,7 +43,20 @@ class PlayerController extends Controller
      */
     public function store(Request $request)
     {
-        return "store";
+        if(auth()->user()->userType < 2)
+        {
+            return redirect('/clubs')->with('error', 'Unauthorized Page');
+        }
+        $this->validate($request, [
+            'playerName' => 'required',
+            'club' => 'required',
+            ]);
+        DB::table('players')->insert(
+            ['playerName' => $request->playerName,
+             'clubID' => $request->club
+            ]
+        );
+        return redirect('/players')->with('success', 'Player Added');
     }
 
     /**
@@ -48,7 +67,16 @@ class PlayerController extends Controller
      */
     public function show($id)
     {
-        return "show";
+        $player = DB::table('players')
+        ->join('clubs', 'players.clubID', 'clubs.clubID')
+        ->where('playerID', $id)
+        ->select('playerName', 'clubs.clubName')
+        ->first();
+        return view('players.show', [
+            'playerName' => $player->playerName,
+            'player' => $id,
+            'club' => $player->clubName
+        ]);
     }
 
     /**
@@ -59,7 +87,8 @@ class PlayerController extends Controller
      */
     public function edit($id)
     {
-        return "edit";
+        // At the moment there is no need to edit a player
+        return redirect('players/' . $id);
     }
 
     /**
@@ -71,7 +100,8 @@ class PlayerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return "Update";
+        // At the moment there is no need to edit a player
+        return redirect('players/' . $id);
     }
 
     /**
@@ -82,6 +112,7 @@ class PlayerController extends Controller
      */
     public function destroy($id)
     {
-        return "Destroy";
+        // At the moment there is no need to edit a player
+        return redirect('players/' . $id);
     }
 }
