@@ -10,11 +10,10 @@ use App\Enums\LeagueType;
 </div>
 <div class="container">
     <table class="table table-hover">
-        @foreach ($teams as $division)
             <thead class="thead-dark">
                 <tr>
                     <th colspan=9 scope=9>
-                        <a href="/division/{{$league}}{{$loop->iteration}}">Division {{$loop->iteration}}</a>
+                        Division {{$div}}
                     </th>
                 </tr>
                 <tr>
@@ -25,7 +24,7 @@ use App\Enums\LeagueType;
                 </tr>
             </thead>
             <tbody>
-                @foreach ($division as $team)
+                @foreach ($teams as $team)
                 <tr class="table-row">
                         <td><a href="/{{$team->clubName}}/{{$league}}{{$team->teamChar}}">{{$loop->iteration}}</a></td>
                         @foreach ($team as $item)
@@ -37,7 +36,6 @@ use App\Enums\LeagueType;
                 </tr>
                 @endforeach
             </tbody>
-        @endforeach
     </table>
 </div>
 @endsection

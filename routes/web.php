@@ -10,14 +10,14 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-//
-//
+
+Route::get('/division/{div}', 'DivisionController@show');
+
 Route::get('/', 'PagesController@index');
-// Route::get('/mens', 'PagesController@mens');
-// Route::get('/ladies', 'PagesController@ladies');
 
 Route::get('/{league}', 'DivisionController@index', function($league){
 })->where('league', '(mens|ladies|juniors)');
+
 
 Route::resources([
     'fixture' => 'FixtureController',

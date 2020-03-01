@@ -18,7 +18,6 @@ class DivisionController extends Controller
     {
         $league = LeagueType::getValueFromString($league);
         $headers = array('Team', 'Played', 'Won', 'Drawn', 'Lost', 'Points For', 'Points Against', 'Total Points');
-        $clubs = DB::table('clubs')->get();
         $divisions = DB::table('teams')
             ->where('teams.leagueType', $league)
             ->max('division');
@@ -28,14 +27,12 @@ class DivisionController extends Controller
             $team = DB::select(DB::raw(config('sql.divisions')), array('div' => $i, 'league' => $league));
             array_push($teams, $team);
         }
-
         return view('divisions.index', [
-            'league' => $league,
+            'league' => LeagueType::getLowerDescription($league),
             'teams' => $teams,
             'headers' => $headers
             ]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -61,8 +58,20 @@ class DivisionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($div)
     {
+        $league = substr($div, 0, -1);
+        $div = intval(substr($div, -1));
+        $league = LeagueType::getValueFromString($league);
+        // return $league;
+        $headers = array('Team', 'Played', 'Won', 'Drawn', 'Lost', 'Points For', 'Points Against', 'Total Points');
+        $teams = DB::select(DB::raw(config('sql.divisions')), array('div' => $div, 'league' => $league));
+        return view('divisions.show', [
+            'league' => LeagueType::getLowerDescription($league),
+            'teams' => $teams,
+            'headers' => $headers,
+            'div' => $div
+            ]);
     }
 
     /**
